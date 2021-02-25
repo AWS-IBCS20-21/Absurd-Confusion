@@ -14,19 +14,16 @@ public dailyTracker(){
 
 }
 
-public void saveAsStart(ArrayList<String> startingPoint, double Hips, double Waist, double LArm, double RArm, double RThigh, double LThigh, double RCalf, double LCalf) {
+//public void updateDaily(ArrayList<String> nameIndex, ArrayList<String> calories, ArrayList<String> nutrients, Array<String> macrosInfo, Array<String> caloriesInfo, String selection)
+{
 
 }
 
+
+
 public static void main(String[] args) {
-  double Hips = 0;
-  double Waist = 0;
-  double RArm = 0;
-  double LArm = 0;
-  double RThigh = 0;
-  double LThigh = 0;
-  double RCalf = 0;
-  double LCalf = 0;
+
+
 }
 
 }
