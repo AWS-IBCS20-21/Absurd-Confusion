@@ -13,23 +13,29 @@ public class nutritionSearch {
   public nutritionSearch(){
     ArrayList <String> nameIndex = new ArrayList<String>();
     ArrayList <String> calories = new ArrayList<String>();
-    ArrayList <String> nutrients = new ArrayList<String>();
-      try{
-          File nutritionalInfo = new File("nutritionalInfo.txt");
-          BufferedReader scan = new BufferedReader(new FileReader (nutritionalInfo));
-          String tempString;
+    ArrayList <String> nutrientsG = new ArrayList<String>();
+    ArrayList <String> nutrientsC = new ArrayList<String>();
+    ArrayList <String> nutrientsP = new ArrayList<String>();
+    ArrayList <String> nutrientsF = new ArrayList<String>();
+    try{
+      File nutritionalInfo = new File("nutritionalInfo.txt");
+      BufferedReader scan = new BufferedReader(new FileReader (nutritionalInfo));
+      String tempString;
 
-          while((tempString = scan.readLine()) != null){
+      while((tempString = scan.readLine()) != null){
 
-              String[] single = tempString.split(":");
-             nameIndex.add(single[1]);
-             calories.add(single[1]);
-             nutrients.add(single[2]);
-          }
-
-      }catch(Exception e){
-          e.printStackTrace();
+        String[] single = tempString.split(":");
+        nameIndex.add(single[1]);
+        calories.add(single[2]);
+        nutrientsG.add(single[3]);
+        nutrientsC.add(single[4]);
+        nutrientsP.add(single[5]);
+        nutrientsF.add(single[6]);
       }
+
+    }catch(Exception e){
+      e.printStackTrace();
+    }
 
   }
 
@@ -46,33 +52,48 @@ public class nutritionSearch {
         keywordArr[i] = Character.toLowerCase(keywordArr[i]);
       }
     }
-for (int i = 0, i < nameIndex.size(); i++){
-  currentName = nameIndex.get(i);
-  temp = currentName.toCharArray();
-  for(int k = 0; i < temp.length; k++){
-    if (Character.isLetter(temp[k]) && Character.isUpperCase(temp[k])) {
-      temp[k] = Character.toLowerCase(temp[k]);
-    }
-  }
-  margin = 3;
-  for (int j = 0; j < temp.length || keywordArr.length; j++){
-    keywordArrC = keywordArr[j];
-    tempC = temp[j]
-    if (!keywordArrC.equals(tempC)) {
-      margin --;
-    }
-    j++
-  }
-  if (margin >= 0){
-    matches.add(currentName + ":" + i);
-  }
-  i++
+    for (int i = 0, i < nameIndex.size(); i++){
+      currentName = nameIndex.get(i);
+      temp = currentName.toCharArray();
+      for(int k = 0; i < temp.length; k++){
+        if (Character.isLetter(temp[k]) && Character.isUpperCase(temp[k])) {
+          temp[k] = Character.toLowerCase(temp[k]);
+        }
+      }
+      margin = 3;
+      for (int j = 0; j < temp.length || keywordArr.length; j++){
+        keywordArrC = keywordArr[j];
+        tempC = temp[j]
+        if (!keywordArrC.equals(tempC)) {
+          margin --;
+        }
+        j++
+      }
+      if (margin >= 0){
+        matches.add(currentName + ":" + i);
+      }
+      i++
 
-}
-return matches;
+    }
+    return matches;
   }
 
-  
+  public ArrayList<String> defaultPortions(int selectionIndex, ArrayList <String> nutrientsG) {
+    ArrayList<String> defaultPortions;
+    double standard = nutrientsG.get(selectionIndex);
+    defaultPortions.add(standard*0.6);
+    defaultPortions.add(standard);
+    defaultPortions.add(standard*1.4);
+
+    return defaultPortions;
+
+  }
+
+  public ArrayList<String> retrieveInfo(double portionSize; String selection, int selectionIndex, ArrayList<String> calories, ArrayList<String> nutrients, Boolean displayCalories){
+
+  }
+
+
 
 
 
