@@ -89,8 +89,23 @@ public class nutritionSearch {
 
   }
 
-  public ArrayList<String> retrieveInfo(double portionSize; String selection, int selectionIndex, ArrayList<String> calories, ArrayList<String> nutrients, Boolean displayCalories){
+  public ArrayList<String> retrieveInfo(double portionSize; String selection, int selectionIndex, ArrayList<String> calories,
+  ArrayList<String> nutrientsG, ArrayList<String> nutrientsP, ArrayList<String> nutrientsF, ArrayList<String> nutrientsC, Boolean displayCalories){
+double adjustedG = portionSize*nutrientsG.get(selectionIndex);
+double adjustedP = portionSize*nutrientsP.get(selectionIndex);
+double adjustedF = portionSize*nutrientsF.get(selectionIndex);
+double adjustedC = portionSize*nutrientsC.get(selectionIndex);
+ArrayList<String> adjustedNutrients;
+adjustedNutrients.add(selection);
+adjustedNutrients.add(adjustedG);
+adjustedNutrients.add(adjustedP);
+adjustedNutrients.add(adjustedF);
+adjustedNutrients.add(adjustedC);
+if (displayCalories == true) {
+  adjustedNutrients.add(calories.get(selectionIndex));
+}
 
+return adjustedNutrients;
   }
 
 
