@@ -33,13 +33,35 @@ public class nutritionalCalculator {
     return temp;
   }
 
-  public static void main(String[] args) {
-    nutritionalCalculator n = new nutritionalCalculator();
-    double weight = 1;
-    double height = 1;
-    int activityLevel = 1;
-    double age = 1;
+  public ArrayList<String> macrosCalculator(double BMRValue, int fitnessGoal) {
+    //1: maintain
+    //2: lose fat, gain muscle
+    //3: lose fat and lose muscle
+    ArrayList<String> adjustedMacros;
+
+    if (fitnessGoal = 1) {
+      adjustedMacros.add((BMRValue*0.4)/4); //carbs
+      adjustedMacros.add((BMRValue*0.3)/4); //protein
+      adjustedMacros.add((BMRValue*0.3)/9); //fat
+
+    }
+
+    if (fitnessGoal = 2) {
+      adjustedMacros.add((BMRValue*0.3)/4); //carbs
+      adjustedMacros.add((BMRValue*0.4)/4); //protein
+      adjustedMacros.add((BMRValue*0.3)/9); //fat
+
+    }
+
+    if (fitnessGoal = 3) {
+      adjustedMacros.add((BMRValue*0.45)/4); //carbs
+      adjustedMacros.add((BMRValue*0.35)/4); //protein
+      adjustedMacros.add((BMRValue*0.2)/9); //fat
+
+    }
   }
+
+
 
 
 }
