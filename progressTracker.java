@@ -14,8 +14,8 @@ public progressTracker(){
 
 }
 
-public ArrayList<String> saveAsStart(double weight, double bodyFatPercentage, double Hips, double Waist, double LArm, double RArm, double RThigh, double LThigh, double RCalf, double LCalf, double Neck, double Shoulders, double Chest) {
-  ArrayList<String> startingPoint;
+public ArrayList<Double> saveAsStart(double weight, double bodyFatPercentage, double Hips, double Waist, double LArm, double RArm, double RThigh, double LThigh, double RCalf, double LCalf, double Neck, double Shoulders, double Chest) {
+  ArrayList<Double> startingPoint = new ArrayList<Double>();
   startingPoint.add(weight);
   startingPoint.add(bodyFatPercentage);
   startingPoint.add(Neck);
@@ -34,8 +34,8 @@ public ArrayList<String> saveAsStart(double weight, double bodyFatPercentage, do
 
 }
 
-public ArrayList<String> update(double weight, double bodyFatPercentage, double Hips, double Waist, double LArm, double RArm, double RThigh, double LThigh, double RCalf, double LCalf, double Neck, double Shoulders, double Chest){
-ArrayList<String> currentMeasurements;
+public ArrayList<Double> update(double weight, double bodyFatPercentage, double Hips, double Waist, double LArm, double RArm, double RThigh, double LThigh, double RCalf, double LCalf, double Neck, double Shoulders, double Chest){
+ArrayList<Double> currentMeasurements = new ArrayList<Double>();
 currentMeasurements.add(weight);
 currentMeasurements.add(bodyFatPercentage);
 currentMeasurements.add(Neck);
@@ -54,8 +54,8 @@ return currentMeasurements;
 
 }
 
-public ArrayList<String> generateReport(ArrayList<String> currentMeasurements, ArrayList<String> startingPoint) {
-  ArrayList<String> report;
+public ArrayList<String> generateReport(ArrayList<Double> currentMeasurements, ArrayList<Double> startingPoint) {
+  ArrayList<String> report = new ArrayList<String>();
   double startp;
   double currentp;
   double diff;
@@ -63,8 +63,9 @@ public ArrayList<String> generateReport(ArrayList<String> currentMeasurements, A
     startp = startingPoint.get(i);
     currentp = currentMeasurements.get(i);
     diff = startp - currentp;
-    report.add(startp + ":" + currentp + ":" + difference);
+    report.add(startp + ":" + currentp + ":" + diff);
   }
 
   return report;
+}
 }
