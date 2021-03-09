@@ -17,6 +17,10 @@ public class NutritionalCalculator {
   public static double BMRCalculator(int weight, int height, int age, int activityLevel) {
     double BMR = 655 + (4.35*weight) + (4.7*height) - (4.7*age);
     double temp = 0;
+    //1: sedentary
+    //2: lightly active
+    //3: moderately active
+    //4: very active 
     if (activityLevel == 1) {
       temp = BMR * 1.2;
     }
@@ -33,39 +37,30 @@ public class NutritionalCalculator {
     return temp;
   }
 
-  public static ArrayList<String> macrosCalculator(double BMRValue, int fitnessGoal) {
+  public static ArrayList<Double> macrosCalculator(double BMRValue, int fitnessGoal) {
     //1: maintain
     //2: lose fat, gain muscle
     //3: lose fat and lose muscle
-    ArrayList<String> adjustedMacros = new ArrayList<String>();
+    ArrayList<Double> adjustedMacros = new ArrayList<Double>();
 
     if (fitnessGoal == 1) {
-      String carbs = String.valueOf((BMRValue*0.4)/4);
-      adjustedMacros.add(carbs);
-      String protein = String.valueOf((BMRValue*0.3)/4);
-      adjustedMacros.add(protein);
-      String fat = String.valueOf((BMRValue*0.3)/9);
-      adjustedMacros.add(fat);
+      adjustedMacros.add((BMRValue*0.4)/4);
+      adjustedMacros.add((BMRValue*0.3)/4);
+      adjustedMacros.add((BMRValue*0.3)/9);
 
     }
 
     if (fitnessGoal == 2) {
-      String carbs = String.valueOf((BMRValue*0.3)/4);
-      adjustedMacros.add(carbs);
-      String protein = String.valueOf((BMRValue*0.4)/4);
-      adjustedMacros.add(protein);
-      String fat = String.valueOf((BMRValue*0.3)/9);
-      adjustedMacros.add(fat);
+      adjustedMacros.add((BMRValue*0.3)/4);
+      adjustedMacros.add((BMRValue*0.4)/4);
+      adjustedMacros.add((BMRValue*0.3)/9);
 
     }
 
     if (fitnessGoal == 3) {
-      String carbs = String.valueOf((BMRValue*0.45)/4);
-      adjustedMacros.add(carbs);
-      String protein = String.valueOf((BMRValue*0.35)/4);
-      adjustedMacros.add(protein);
-      String fat = String.valueOf((BMRValue*0.2)/9);
-      adjustedMacros.add(fat);
+      adjustedMacros.add((BMRValue*0.45)/4);
+      adjustedMacros.add((BMRValue*0.35)/4);
+      adjustedMacros.add((BMRValue*0.2)/9);
 
     }
 

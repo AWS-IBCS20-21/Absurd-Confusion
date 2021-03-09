@@ -1,0 +1,6 @@
+Apple:125:17:0:0
+Peanutbutter and banana wheat bread sandwich:173:50:12:10
+Sea salt and vinegar chips:28:15:2:10
+Granola bar:24:17:2:3
+Izzy:340:14:0:0
+Grilled chicken salad:312:14:19:34
