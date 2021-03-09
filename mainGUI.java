@@ -103,13 +103,13 @@ public class mainGUI {
 
 
   public mainGUI(){
-     prepareGUI();
+     setUpGUI();
   }
   public static void main(String[] args){
      mainGUI mainGUI = new mainGUI();
-     mainGUI.showEventDemo();
+     mainGUI.runIA();
   }
-  private void prepareGUI(){
+  private void setUpGUI(){
      mainFrame = new JFrame("IA");
      mainFrame.setSize(900,600);
      mainFrame.setLayout(new GridLayout(2, 2));
@@ -142,7 +142,7 @@ public class mainGUI {
      mainFrame.add(dailyFoodLog);
      mainFrame.setVisible(true);
   }
-  private void showEventDemo(){
+  private void runIA(){
      headerLabel.setText("Welcome to Nutrition Assistant");
 
      //enterInfo
@@ -160,17 +160,17 @@ public class mainGUI {
      activityLevelComboBox = new JComboBox(activityLevelList);
      enterPersonalInfoButton = new JButton("Enter information");
      enterPersonalInfoButton.setActionCommand("Calculate BMR");
-     enterPersonalInfoButton.addActionListener(new ButtonClickListener());
+     enterPersonalInfoButton.addActionListener(new guiActionListener());
      clearEnterInfoButton = new JButton("Reset");
      clearEnterInfoButton.setActionCommand("Clear enterInfo");
-     clearEnterInfoButton.addActionListener(new ButtonClickListener());
+     clearEnterInfoButton.addActionListener(new guiActionListener());
 
      //macrosInfo
      macrosInfoLabel = new JLabel("Please specify your fitness goals:");
      fitnessGoalsComboBox = new JComboBox(fitnessGoalsList);
      fitnessGoalsButton = new JButton("Calculate macronutrients");
      fitnessGoalsButton.setActionCommand("Calculate macronutrients");
-     fitnessGoalsButton.addActionListener(new ButtonClickListener());
+     fitnessGoalsButton.addActionListener(new guiActionListener());
      carbsTextArea = new JTextArea(1, 5);
      carbsTextArea.setEditable(false);
      proteinTextArea = new JTextArea(1, 5);
@@ -179,34 +179,34 @@ public class mainGUI {
      fatTextArea.setEditable(false);
      clearMacrosInfoButton = new JButton("Reset");
      clearMacrosInfoButton.setActionCommand("Clear macrosInfo");
-     clearMacrosInfoButton.addActionListener(new ButtonClickListener());
+     clearMacrosInfoButton.addActionListener(new guiActionListener());
 
      //logFood
      logFoodLabel = new JLabel("Log a food");
      searchBarTextField = new JTextField(20);
      enterFoodButton = new JButton("Enter");
      enterFoodButton.setActionCommand("Enter food");
-     enterFoodButton.addActionListener(new ButtonClickListener());
+     enterFoodButton.addActionListener(new guiActionListener());
      matchTextArea = new JTextArea(1, 7);
      matchTextArea.setEditable(false);
      confirmMatch = new JButton("Confirm match");
      confirmMatch.setActionCommand("Confirm match");
-     confirmMatch.addActionListener(new ButtonClickListener());
+     confirmMatch.addActionListener(new guiActionListener());
      portionSizeComboBox = new JComboBox();
      customPortionSizeTextField = new JTextField(3);
      customPortionSizeLabel = new JLabel("g");
      confirmPortionButton = new JButton("Confirm portion size");
      confirmPortionButton.setActionCommand("Confirm portion size");
-     confirmPortionButton.addActionListener(new ButtonClickListener());
+     confirmPortionButton.addActionListener(new guiActionListener());
      enterCustomPortionLabel = new JLabel("Enter custom value here:");
      nutritionalInfo = new JTextArea(5, 10);
      nutritionalInfo.setEditable(false);
      logFoodButton = new JButton("Log this");
      logFoodButton.setActionCommand("Log this");
-     logFoodButton.addActionListener(new ButtonClickListener());
+     logFoodButton.addActionListener(new guiActionListener());
      clearLogFoodButton = new JButton("Reset");
      clearLogFoodButton.setActionCommand("Clear logFood");
-     clearLogFoodButton.addActionListener(new ButtonClickListener());
+     clearLogFoodButton.addActionListener(new guiActionListener());
 
      //dailyLog
      dailyLogLabel = new JLabel("                      Daily log                      ");
@@ -216,7 +216,7 @@ public class mainGUI {
      remainingTodayTextArea = new JTextArea(3, 10);
      clearDailyLogButton = new JButton("Reset");
      clearDailyLogButton.setActionCommand("Clear dailyLog");
-     clearDailyLogButton.addActionListener(new ButtonClickListener());
+     clearDailyLogButton.addActionListener(new guiActionListener());
      totalTextArea = new JTextArea(3, 10);
      totalLabel = new JLabel("Total macronutrients today:");
 
@@ -279,7 +279,7 @@ public class mainGUI {
 
 
   }
-  private class ButtonClickListener implements ActionListener{
+  private class guiActionListener implements ActionListener{
      public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
 
@@ -290,7 +290,7 @@ public class mainGUI {
           else {
            String keyword = searchBarTextField.getText();
            nameIndex = IntoArrayLists.nameIndex();
-           selectionIndex = NutritionSearch.searchMatches(keyword, nameIndex);
+           selectionIndex = NutritionalSearch.searchMatches(keyword, nameIndex);
            if (selectionIndex >= 0){
             matchTextArea.setText("Match found: " + nameIndex.get(selectionIndex));
          }
@@ -309,12 +309,12 @@ public class mainGUI {
            int a = Integer.parseInt(ageTextField.getText());
            String tempac = (String)activityLevelComboBox.getSelectedItem();
            int ac = Integer.parseInt(tempac.substring(0,1));
-           BMRValue = NutritionalCalculator.BMRCalculator(w, h, a, ac);
+           BMRValue = NutritionCalculator.BMRCalculator(w, h, a, ac);
            }
         }
         else if (command.equals("Calculate macronutrients")) {
           String tempfg = (String)fitnessGoalsComboBox.getSelectedItem();
-          ArrayList<Double> m = NutritionalCalculator.macrosCalculator(BMRValue, Integer.parseInt(tempfg.substring(0,1)));
+          ArrayList<Double> m = NutritionCalculator.macrosCalculator(BMRValue, Integer.parseInt(tempfg.substring(0,1)));
           BMRCarbs = m.get(0);
           BMRProtein = m.get(1);
           BMRFat = m.get(2);
@@ -327,7 +327,7 @@ public class mainGUI {
         }
         else if (command.equals("Confirm match")) {
           nutrientsG = IntoArrayLists.nutrientsG();
-          tempDefaults = NutritionSearch.defaultPortions(selectionIndex, nutrientsG);
+          tempDefaults = NutritionalSearch.defaultPortions(selectionIndex, nutrientsG);
           portionSizeComboBox.insertItemAt("Small: " + String.format("%.0f", tempDefaults.get(0)) + "g", 0);
           portionSizeComboBox.insertItemAt("Standard: " + String.format("%.0f", tempDefaults.get(1)) + "g", 1);
           portionSizeComboBox.insertItemAt("Large: " + String.format("%.0f", tempDefaults.get(2)) + "g", 2);
@@ -360,13 +360,13 @@ public class mainGUI {
         else if (command.equals("Log this")){
            loggedTodayTextArea.append(name + " - " + grams + ", " + carbs + ", " + protein + ", " + fat + "\n");
 
-           ArrayList<Double> temp = DailyTracker.macrosLeft(BMRCarbsT, BMRProteinT, BMRFatT, carbsD, proteinD, fatD);
+           ArrayList<Double> temp = TodayTracker.macrosLeft(BMRCarbsT, BMRProteinT, BMRFatT, carbsD, proteinD, fatD);
            BMRCarbsT = temp.get(0);
            BMRProteinT = temp.get(1);
            BMRFatT = temp.get(2);
            remainingTodayTextArea.setText(String.format("%.0fg carbohydrates", BMRCarbsT) + "\n"
            + String.format("%.0fg protein", BMRProteinT) + "\n" + String.format("%.0fg fat", BMRFatT));
-           ArrayList<Double> temp2 = DailyTracker.macrosTotal(BMRCarbsS, BMRProteinS, BMRFatS, carbsD, proteinD, fatD);
+           ArrayList<Double> temp2 = TodayTracker.macrosTotal(BMRCarbsS, BMRProteinS, BMRFatS, carbsD, proteinD, fatD);
            BMRCarbsS = temp2.get(0);
            BMRProteinS = temp2.get(1);
            BMRFatS = temp2.get(2);
