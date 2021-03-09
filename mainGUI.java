@@ -11,9 +11,10 @@ import java.io.FileReader;
 public class mainGUI {
 
   private JFrame mainFrame;
+  private JLabel headerLabel;
+  private JLabel statusLabel;
 
   private JPanel enterInfo;
-  private JLabel welcomeLabel;
   private JTextField weightTextField;
   private JTextField heightTextField;
   private JTextField ageTextField;
@@ -86,6 +87,8 @@ public class mainGUI {
 
   private JPanel dailyLog;
   private JLabel dailyLogLabel;
+  private JLabel loggedTodayLabel;
+  private JTextArea loggedTodayTextArea;
   private JLabel remainingTodayLabel;
   private JTextArea remainingTodayTextArea;
   private JButton clearDailyLogButton;
@@ -93,126 +96,7 @@ public class mainGUI {
   private JTextArea totalTextArea;
   private JLabel totalLabel;
 
-  private JPanel todayTracked;
-  private JLabel loggedTodayLabel;
-  private JTextArea loggedTodayTextArea;
-
-  private JPanel progressLog1;
-  private JPanel progressLog2;
-  private JPanel progressLog3;
-  private double weightss;
-  private double bodyFatPercentagess;
-  private double Hipsss;
-  private double Waistss;
-  private double LArmss;
-  private double RArmss;
-  private double RThighss;
-  private double LThighss;
-  private double RCalfss;
-  private double LCalfss;
-  private double Shouldersss;
-  private double Chestss;
-  private double weightcc;
-  private double bodyFatPercentagecc;
-  private double Hipscc;
-  private double Waistcc;
-  private double LArmcc;
-  private double RArmcc;
-  private double RThighcc;
-  private double LThighcc;
-  private double RCalfcc;
-  private double LCalfcc;
-  private double Shoulderscc;
-  private double Chestcc;
-  private JLabel sweighto;
-  private JLabel sbodyFatPercentageo;
-  private JLabel sHipso;
-  private JLabel sWaisto;
-  private JLabel sLArmo;
-  private JLabel sRArmo;
-  private JLabel sRThigho;
-  private JLabel sLThigho;
-  private JLabel sRCalfo;
-  private JLabel sLCalfo;
-  private JLabel sShoulderso;
-  private JLabel sChesto;
-  private JTextArea sweight;
-  private JTextArea sbodyFatPercentage;
-  private JTextArea sHips;
-  private JTextArea sWaist;
-  private JTextArea sLArm;
-  private JTextArea sRArm;
-  private JTextArea sRThigh;
-  private JTextArea sLThigh;
-  private JTextArea sRCalf;
-  private JTextArea sLCalf;
-  private JTextArea sShoulders;
-  private JTextArea sChest;
-  private JLabel sweightu;
-  private JLabel sbodyFatPercentageu;
-  private JLabel sHipsu;
-  private JLabel sWaistu;
-  private JLabel sLArmu;
-  private JLabel sRArmu;
-  private JLabel sRThighu;
-  private JLabel sLThighu;
-  private JLabel sRCalfu;
-  private JLabel sLCalfu;
-  private JLabel sShouldersu;
-  private JLabel sChestu;
-  private JLabel cweighto;
-  private JLabel cbodyFatPercentageo;
-  private JLabel cHipso;
-  private JLabel cWaisto;
-  private JLabel cLArmo;
-  private JLabel cRArmo;
-  private JLabel cRThigho;
-  private JLabel cLThigho;
-  private JLabel cRCalfo;
-  private JLabel cLCalfo;
-  private JLabel cShoulderso;
-  private JLabel cChesto;
-  private JTextArea cweight;
-  private JTextArea cbodyFatPercentage;
-  private JTextArea cHips;
-  private JTextArea cWaist;
-  private JTextArea cLArm;
-  private JTextArea cRArm;
-  private JTextArea cRThigh;
-  private JTextArea cLThigh;
-  private JTextArea cRCalf;
-  private JTextArea cLCalf;
-  private JTextArea cShoulders;
-  private JTextArea cChest;
-  private JLabel cweightu;
-  private JLabel cbodyFatPercentageu;
-  private JLabel cHipsu;
-  private JLabel cWaistu;
-  private JLabel cLArmu;
-  private JLabel cRArmu;
-  private JLabel cRThighu;
-  private JLabel cLThighu;
-  private JLabel cRCalfu;
-  private JLabel cLCalfu;
-  private JLabel cShouldersu;
-  private JLabel cChestu;
-  private JLabel dweight;
-  private JLabel dbodyFatPercentage;
-  private JLabel dHips;
-  private JLabel dWaist;
-  private JLabel dLArm;
-  private JLabel dRArm;
-  private JLabel dRThigh;
-  private JLabel dLThigh;
-  private JLabel dRCalf;
-  private JLabel dLCalf;
-  private JLabel dShoulders;
-  private JLabel dChest;
-  private JLabel enterStartLabel;
-  private JButton enterStartButton;
-  private JButton updateStartButton;
-
-
+  private JPanel dailyFoodLog;
 
 
 
@@ -230,14 +114,15 @@ public class mainGUI {
      mainFrame.setSize(900,600);
      mainFrame.setLayout(new GridLayout(2, 2));
 
-
+    headerLabel = new JLabel("",JLabel.CENTER );
+     //statusLabel = new JLabel("",JLabel.CENTER);
+     //statusLabel.setSize(40,100);
 
      mainFrame.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent windowEvent){
            System.exit(0);
         }
      });
-
      enterInfo = new JPanel();
      enterInfo.setLayout(new FlowLayout());
      macrosInfo = new JPanel();
@@ -246,29 +131,21 @@ public class mainGUI {
      logFood.setLayout(new FlowLayout());
      dailyLog = new JPanel();
      dailyLog.setLayout(new FlowLayout());
-     todayTracked = new JPanel();
-     todayTracked.setLayout(new FlowLayout());
-     progressLog1 = new JPanel();
-     progressLog1.setLayout(new FlowLayout());
-     progressLog2 = new JPanel();
-     progressLog2.setLayout(new FlowLayout());
-     progressLog3 = new JPanel();
-     progressLog3.setLayout(new FlowLayout());
+     dailyFoodLog = new JPanel();
+     dailyFoodLog.setLayout(new FlowLayout());
 
+     mainFrame.add(headerLabel);
      mainFrame.add(enterInfo);
      mainFrame.add(macrosInfo);
      mainFrame.add(logFood);
      mainFrame.add(dailyLog);
-     mainFrame.add(todayTracked);
-     mainFrame.add(progressLog1);
-     mainFrame.add(progressLog2);
-     mainFrame.add(progressLog3);
+     mainFrame.add(dailyFoodLog);
      mainFrame.setVisible(true);
   }
   private void showEventDemo(){
+     headerLabel.setText("Welcome to Nutrition Assistant");
 
      //enterInfo
-     welcomeLabel = new JLabel("Welcome to Nutrition Assistant! \n");
      personalInfoLabel = new JLabel("Please enter personal information:");
      weightLabelS = new JLabel("Weight:");
      weightTextField = new JTextField(3);
@@ -333,6 +210,8 @@ public class mainGUI {
 
      //dailyLog
      dailyLogLabel = new JLabel("                      Daily log                      ");
+     loggedTodayLabel = new JLabel("Logged today:");
+     loggedTodayTextArea = new JTextArea(6, 10);
      remainingTodayLabel = new JLabel("Remaining macronutrients today:");
      remainingTodayTextArea = new JTextArea(3, 10);
      clearDailyLogButton = new JButton("Reset");
@@ -341,68 +220,7 @@ public class mainGUI {
      totalTextArea = new JTextArea(3, 10);
      totalLabel = new JLabel("Total macronutrients today:");
 
-     //todayTracked
-     loggedTodayLabel = new JLabel("Logged today:");
-     loggedTodayTextArea = new JTextArea(6, 10);
 
-     //progressLog1
-     sweighto = new JLabel("Weight:");
-     sbodyFatPercentageo = new JLabel("Body fat percentage:");
-     sHipso = new JLabel("Hips:");
-     sWaisto = new JLabel("Waist");
-     sLArmo = new JLabel("Left arm:");
-     sRArmo = new JLabel("Right arm:");
-     sRThigho = new JLabel("Right thigh:");
-     sLThigho = new JLabel("Left thigh:");
-     sRCalfo = new JLabel("Right calf:");
-     sLCalfo = new JLabel("Left calf:");
-     sShoulderso = new JLabel("Shoulders:");
-     sChesto = new JLabel("Chest:");
-     sweightu = new JLabel("lbs");
-     sbodyFatPercentageu = new JLabel("%");
-     sHipsu = new JLabel("in");
-     sWaistu = new JLabel("in");
-     sLArmu = new JLabel("in");
-     sRArmu = new JLabel("in");
-     sRThighu = new JLabel("in");
-     sLThighu = new JLabel("in");
-     sRCalfu = new JLabel("in");
-     sLCalfu = new JLabel("in");
-     sShouldersu = new JLabel("in");
-     sChestu = new JLabel("in");
-     sweighto = new JLabel("Weight:");
-     sbodyFatPercentageo = new JLabel("Body fat percentage:");
-     sHips = new JTextArea(1,3);
-     sHips.setEditable(false);
-     sWaist = new JTextArea(1,3);
-     sWaist.setEditable(false);
-     sLArm = new JTextArea(1,3);
-     sLArm.setEditable(false);
-     sRArm = new JTextArea(1,3);
-     sRArm.setEditable(false);
-     sRThigh = new JTextArea(1,3);
-     sRThigh.setEditable(false);
-     sLThigh = new JTextArea(1,3);
-     sLThigh.setEditable(false);
-     sRCalf = new JTextArea(1,3);
-     sRCalf.setEditable(false);
-     sLCalf = new JTextArea(1,3);
-     sLCalf.setEditable(false);
-     sShoulders = new JTextArea(1,3);
-     sShoulders.setEditable(false);
-     sChest = new JTextArea(1,3);
-     sChest.setEditable(false);
-     enterStartLabel = new JLabel("Starting measurements:");
-     enterStartButton = new JButton("Edit");
-     enterStartButton.setActionCommand("Edit start");
-     enterStartButton.addActionListener(new ButtonClickListener());
-     updateStartButton = new JButton("Update measurements");
-     updateStartButton.setActionCommand("Update start");
-     updateStartButton.addActionListener(new ButtonClickListener());
-
-
-
-     enterInfo.add(welcomeLabel);
      enterInfo.add(personalInfoLabel);
      enterInfo.add(weightLabelS);
      enterInfo.add(weightTextField);
@@ -442,54 +260,17 @@ public class mainGUI {
      logFood.add(clearLogFoodButton);
 
      dailyLog.add(dailyLogLabel);
-     dailyLog.add(remainingTodayLabel);
-     dailyLog.add(remainingTodayTextArea);
-     dailyLog.add(totalLabel);
-     dailyLog.add(totalTextArea);
-     dailyLog.add(clearDailyLogButton);
+     dailyLog.add(loggedTodayLabel);
+     dailyLog.add(loggedTodayTextArea);
 
-     todayTracked.add(loggedTodayLabel);
-     todayTracked.add(loggedTodayTextArea);
+     dailyFoodLog.add(remainingTodayLabel);
+     dailyFoodLog.add(remainingTodayTextArea);
+     dailyFoodLog.add(totalLabel);
+     dailyFoodLog.add(totalTextArea);
+     dailyFoodLog.add(clearDailyLogButton);
 
-     progressLog1.add(enterStartLabel);
-     progressLog1.add(enterStartButton);
-      progressLog1.add(sweighto);
-     progressLog1.add(sweight);
-     progressLog1.add(sweightu);
-     progressLog1.add(sbodyFatPercentageo);
-     progressLog1.add(sbodyFatPercentage);
-     progressLog1.add(sbodyFatPercentageu);
-     progressLog1.add(sWaisto);
-     progressLog1.add(sWaist);
-     progressLog1.add(sWaistu);
-     progressLog1.add(sHipso);
-     progressLog1.add(sHips);
-     progressLog1.add(sHipsu);
-     progressLog1.add(sChesto);
-     progressLog1.add(sChest);
-     progressLog1.add(sChestu);
-     progressLog1.add(sShoulderso);
-     progressLog1.add(sShoulders);
-     progressLog1.add(sShouldersu);
-     progressLog1.add(sRArmo);
-     progressLog1.add(sRArm);
-     progressLog1.add(sRArmu);
-     progressLog1.add(sLArmo);
-     progressLog1.add(sLArm);
-     progressLog1.add(sLArmu);
-     progressLog1.add(sRThigho);
-     progressLog1.add(sRThigh);
-     progressLog1.add(sRThighu);
-     progressLog1.add(sLThigho);
-     progressLog1.add(sLThigh);
-     progressLog1.add(sLThighu);
-     progressLog1.add(sRCalfo);
-     progressLog1.add(sRCalf);
-     progressLog1.add(sRCalfu);
-     progressLog1.add(sLCalfo);
-     progressLog1.add(sLCalf);
-     progressLog1.add(sLCalfu);
-     progressLog1.add(updateStartButton);
+
+
 
 
 
