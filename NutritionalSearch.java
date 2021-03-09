@@ -10,6 +10,10 @@ import java.io.FileReader;
 
 public class NutritionalSearch {
 
+  public NutritionalSearch(){
+
+  }
+
   public static int searchMatches(String keyword, ArrayList<String> nameIndex) {
     String currentName;
     int matchIndex = -1;
