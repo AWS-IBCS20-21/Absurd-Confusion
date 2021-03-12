@@ -21,7 +21,11 @@ public class mainGUI {
   private JTextField activityLevelTextField;
   private JLabel personalInfoLabel;
   private JButton enterPersonalInfoButton;
-  private double BMRValue = 0;
+  private double BMRValue;
+  private double weight;
+  private double height;
+  private int age;
+  private int activityLevel;
   private JLabel weightLabel;
   private JLabel heightLabel;
   private JLabel ageLabel;
@@ -29,16 +33,20 @@ public class mainGUI {
   private JLabel heightLabelS;
   private JLabel ageLabelS;
   private JLabel activityLevelLabelS;
-  private static final String activityLevelList[] = {"1: Sedentary", "2: Lightly active", "3: Moderately active", "4: Very active"};
+  private static final String activityLevelList[] = {"1: Sedentary", "2: Lightly active",
+  "3: Moderately active", "4: Very active"};
 	private JComboBox activityLevelComboBox;
   private JButton clearEnterInfoButton;
+  private double filedBMR;
+  private int filedActivityLevel;
 
   private JPanel macrosInfo;
   private JButton fitnessGoalsButton;
   private JTextArea carbsTextArea;
   private JTextArea proteinTextArea;
   private JTextArea fatTextArea;
-  private static final String fitnessGoalsList[] = {"1: Maintain", "2: Lose fat and gain muscle", "3: Lost fat and lose muscle"};
+  private static final String fitnessGoalsList[] = {"1: Maintain", "2: Lose fat and gain muscle",
+  "3: Lost fat and lose muscle"};
   private JComboBox fitnessGoalsComboBox;
   private JLabel macrosInfoLabel;
   private JButton clearMacrosInfoButton;
@@ -51,6 +59,11 @@ public class mainGUI {
   private double BMRCarbsS;
   private double BMRProteinS;
   private double BMRFatS;
+  private int filedFitnessGoal;
+  private double filedCarbs;
+  private double filedProtein;
+  private double filedFat;
+
 
   private JPanel logFood;
   private JTextField searchBarTextField;
@@ -95,8 +108,14 @@ public class mainGUI {
   private int i = -1;
   private JTextArea totalTextArea;
   private JLabel totalLabel;
-
+  private String filedDaily;
+  private ArrayList<Double> filedRemaining;
+  private ArrayList<Double> filedTotal;
+  private ArrayList<String> filedRemainingAndTotal;
   private JPanel dailyFoodLog;
+  private String currentlyLogged;
+
+
 
 
 
@@ -110,19 +129,20 @@ public class mainGUI {
      mainGUI.runIA();
   }
   private void setUpGUI(){
-     mainFrame = new JFrame("IA");
+     mainFrame = new JFrame("Nutrition Assistant");
      mainFrame.setSize(900,600);
      mainFrame.setLayout(new GridLayout(2, 2));
 
+
     headerLabel = new JLabel("",JLabel.CENTER );
-     //statusLabel = new JLabel("",JLabel.CENTER);
-     //statusLabel.setSize(40,100);
+
 
      mainFrame.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent windowEvent){
            System.exit(0);
         }
      });
+
      enterInfo = new JPanel();
      enterInfo.setLayout(new FlowLayout());
      macrosInfo = new JPanel();
@@ -140,6 +160,7 @@ public class mainGUI {
      mainFrame.add(logFood);
      mainFrame.add(dailyLog);
      mainFrame.add(dailyFoodLog);
+
      mainFrame.setVisible(true);
   }
   private void runIA(){
@@ -149,15 +170,26 @@ public class mainGUI {
      personalInfoLabel = new JLabel("Please enter personal information:");
      weightLabelS = new JLabel("Weight:");
      weightTextField = new JTextField(3);
+     weight = FromFiles.getWeightStorage();
+     weightTextField.setText(String.format("%.0f", weight));
      weightLabel = new JLabel("lbs  ");
      heightLabelS = new JLabel("Height:");
+     height = FromFiles.getHeightStorage();
      heightTextField = new JTextField(3);
+     heightTextField.setText(String.format("%.0f", height));
      heightLabel = new JLabel("inches  ");
      ageLabelS = new JLabel("Age:");
      ageTextField = new JTextField(3);
+     age = FromFiles.getAgeStorage();
+     String tempAge = Integer.toString(age);
+     ageTextField.setText(tempAge);
      ageLabel = new JLabel("years  ");
      activityLevelLabelS = new JLabel("Activity level:");
      activityLevelComboBox = new JComboBox(activityLevelList);
+     filedActivityLevel = FromFiles.getActivityLevelStorage();
+     activityLevelComboBox.setSelectedIndex(filedActivityLevel);
+     filedBMR = FromFiles.getBMRStorage();
+     BMRValue = filedBMR;
      enterPersonalInfoButton = new JButton("Enter information");
      enterPersonalInfoButton.setActionCommand("Calculate BMR");
      enterPersonalInfoButton.addActionListener(new guiActionListener());
@@ -165,21 +197,33 @@ public class mainGUI {
      clearEnterInfoButton.setActionCommand("Clear enterInfo");
      clearEnterInfoButton.addActionListener(new guiActionListener());
 
+
      //macrosInfo
      macrosInfoLabel = new JLabel("Please specify your fitness goals:");
      fitnessGoalsComboBox = new JComboBox(fitnessGoalsList);
+     filedFitnessGoal = FromFiles.getFitnessGoalStorage();
+     fitnessGoalsComboBox.setSelectedIndex(filedFitnessGoal);
      fitnessGoalsButton = new JButton("Calculate macronutrients");
      fitnessGoalsButton.setActionCommand("Calculate macronutrients");
      fitnessGoalsButton.addActionListener(new guiActionListener());
      carbsTextArea = new JTextArea(1, 5);
      carbsTextArea.setEditable(false);
+     filedCarbs = FromFiles.getMacrosStorageCarbs();
+     carbsTextArea.setText(String.format("%.0fg carbohydrates", filedCarbs));
      proteinTextArea = new JTextArea(1, 5);
      proteinTextArea.setEditable(false);
+     filedProtein = FromFiles.getMacrosStorageProtein();
+     proteinTextArea.setText(String.format("%.0fg protein", filedProtein));
      fatTextArea = new JTextArea(1, 5);
      fatTextArea.setEditable(false);
+     filedFat = FromFiles.getMacrosStorageFat();
+     fatTextArea.setText(String.format("%.0fg fat", filedFat));
      clearMacrosInfoButton = new JButton("Reset");
+     macrosInfo.add(clearMacrosInfoButton);
      clearMacrosInfoButton.setActionCommand("Clear macrosInfo");
      clearMacrosInfoButton.addActionListener(new guiActionListener());
+     clearMacrosInfoButton.addActionListener(new guiActionListener());
+
 
      //logFood
      logFoodLabel = new JLabel("Log a food");
@@ -212,12 +256,29 @@ public class mainGUI {
      dailyLogLabel = new JLabel("                      Daily log                      ");
      loggedTodayLabel = new JLabel("Logged today:");
      loggedTodayTextArea = new JTextArea(6, 10);
+     filedDaily = FromFiles.getDailyStorage();
+     loggedTodayTextArea.setEditable(false);
+     loggedTodayTextArea.setText(filedDaily);
      remainingTodayLabel = new JLabel("Remaining macronutrients today:");
      remainingTodayTextArea = new JTextArea(3, 10);
+     remainingTodayTextArea.setEditable(false);
+     filedRemaining = FromFiles.getRemainingStorage();
+     BMRCarbsT = filedRemaining.get(0);
+     BMRProteinT = filedRemaining.get(1);
+     BMRFatT = filedRemaining.get(2);
+     remainingTodayTextArea.setText(String.format("%.0fg carbohydrates", filedRemaining.get(0)) + "\n" +
+     String.format("%.0fg protein", filedRemaining.get(1)) + "\n" + String.format("%.0fg fat", filedRemaining.get(2)));
      clearDailyLogButton = new JButton("Reset");
      clearDailyLogButton.setActionCommand("Clear dailyLog");
      clearDailyLogButton.addActionListener(new guiActionListener());
      totalTextArea = new JTextArea(3, 10);
+     totalTextArea.setEditable(false);
+     filedTotal = FromFiles.getTotalStorage();
+     BMRCarbsS = filedTotal.get(0);
+     BMRProteinS = filedTotal.get(1);
+     BMRFatS = filedTotal.get(2);
+     totalTextArea.setText(String.format("%.0fg carbohydrates", filedTotal.get(0)) + "\n" +
+     String.format("%.0fg protein", filedTotal.get(1)) + "\n" + String.format("%.0fg fat", filedTotal.get(2)));
      totalLabel = new JLabel("Total macronutrients today:");
 
 
@@ -304,13 +365,22 @@ public class mainGUI {
              BMRValue = 0;
            }
            else {
-           int w = Integer.parseInt(weightTextField.getText());
-           int h = Integer.parseInt(heightTextField.getText());
-           int a = Integer.parseInt(ageTextField.getText());
+           weight = Integer.parseInt(weightTextField.getText());
+           height = Integer.parseInt(heightTextField.getText());
+           age = Integer.parseInt(ageTextField.getText());
            String tempac = (String)activityLevelComboBox.getSelectedItem();
            int ac = Integer.parseInt(tempac.substring(0,1));
-           BMRValue = NutritionCalculator.BMRCalculator(w, h, a, ac);
+           BMRValue = NutritionCalculator.BMRCalculator(weight, height, age, ac);
+           activityLevel = activityLevelComboBox.getSelectedIndex();
+           FileLogged.fileBMR(BMRValue);
+           FileLogged.fileWeight(weight);
+           FileLogged.fileHeight(height);
+           FileLogged.fileAge(age);
+           FileLogged.fileActivityLevel(activityLevel);
+
            }
+
+
         }
         else if (command.equals("Calculate macronutrients")) {
           String tempfg = (String)fitnessGoalsComboBox.getSelectedItem();
@@ -321,9 +391,18 @@ public class mainGUI {
           carbsTextArea.setText(String.format("%.0f", BMRCarbs) + "g carbohydrates");
           proteinTextArea.setText(String.format("%.0f", BMRProtein) + "g protein");
           fatTextArea.setText(String.format("%.0f", BMRFat) + "g fat");
-          BMRCarbsT = BMRCarbs;
-          BMRProteinT = BMRProtein;
-          BMRFatT = BMRFat;
+          FileLogged.fileMacrosCarbs(BMRCarbs);
+          FileLogged.fileMacrosProtein(BMRProtein);
+          FileLogged.fileMacrosFat(BMRFat);
+          FileLogged.fileRemaining(BMRCarbs, BMRProtein, BMRFat);
+          filedRemaining = FromFiles.getRemainingStorage();
+          filedTotal = FromFiles.getTotalStorage();
+          BMRCarbsT = filedRemaining.get(0);
+          BMRProteinT = filedRemaining.get(1);
+          BMRFatT = filedRemaining.get(2);
+          remainingTodayTextArea.setText(String.format("%.0f", BMRCarbs) + "g carbohydrates" + "\n" +
+          String.format("%.0f", BMRProtein) + "g protein" + "\n" + String.format("%.0f", BMRFat) + "g fat");
+
         }
         else if (command.equals("Confirm match")) {
           nutrientsG = IntoArrayLists.nutrientsG();
@@ -358,7 +437,9 @@ public class mainGUI {
 
         }
         else if (command.equals("Log this")){
-           loggedTodayTextArea.append(name + " - " + grams + ", " + carbs + ", " + protein + ", " + fat + "\n");
+           loggedTodayTextArea.append(name + " -\n" + grams + "\n" + carbs + "\n" + protein + "\n" + fat +"\n");
+           currentlyLogged = loggedTodayTextArea.getText();
+           FileLogged.fileDaily(currentlyLogged);
 
            ArrayList<Double> temp = TodayTracker.macrosLeft(BMRCarbsT, BMRProteinT, BMRFatT, carbsD, proteinD, fatD);
            BMRCarbsT = temp.get(0);
@@ -366,12 +447,14 @@ public class mainGUI {
            BMRFatT = temp.get(2);
            remainingTodayTextArea.setText(String.format("%.0fg carbohydrates", BMRCarbsT) + "\n"
            + String.format("%.0fg protein", BMRProteinT) + "\n" + String.format("%.0fg fat", BMRFatT));
+           FileLogged.fileRemaining(BMRCarbsT, BMRProteinT, BMRFatT);
            ArrayList<Double> temp2 = TodayTracker.macrosTotal(BMRCarbsS, BMRProteinS, BMRFatS, carbsD, proteinD, fatD);
            BMRCarbsS = temp2.get(0);
            BMRProteinS = temp2.get(1);
            BMRFatS = temp2.get(2);
            totalTextArea.setText(String.format("%.0fg carbohydrates", BMRCarbsS) + "\n"
            + String.format("%.0fg protein", BMRProteinS) + "\n" + String.format("%.0fg fat", BMRFatS));
+           FileLogged.fileTotal(BMRCarbsS, BMRProteinS, BMRFatS);
         }
         else if (command.equals("Clear logFood")){
         Clearing.clearLogFood(searchBarTextField, matchTextArea, portionSizeComboBox, customPortionSizeTextField, nutritionalInfo);
@@ -383,7 +466,7 @@ public class mainGUI {
           Clearing.clearMacrosInfo(fitnessGoalsComboBox, carbsTextArea, proteinTextArea, fatTextArea);
         }
         else if(command.equals("Clear dailyLog")) {
-          Clearing.clearDailyLog(loggedTodayTextArea, remainingTodayTextArea, totalTextArea);
+          Clearing.clearDailyLog(BMRCarbs, BMRProtein, BMRFat, loggedTodayTextArea, remainingTodayTextArea, totalTextArea);
         }
      }
   }
