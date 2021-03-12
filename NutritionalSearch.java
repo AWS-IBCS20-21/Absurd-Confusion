@@ -40,8 +40,8 @@ public class NutritionalSearch {
 
   }
 
-  public static ArrayList<Double> retrieveInfo(double portionSize, String selection, int selectionIndex,
-ArrayList<String> nutrientsG, ArrayList<String> nutrientsP, ArrayList<String> nutrientsF, ArrayList<String> nutrientsC, Boolean displayCalories){
+  public static ArrayList<Double> retrieveInfo(double portionSize, int selectionIndex, ArrayList<String> nutrientsG,
+  ArrayList<String> nutrientsP, ArrayList<String> nutrientsF, ArrayList<String> nutrientsC){
 double adjustedG = portionSize*Double.parseDouble(nutrientsG.get(selectionIndex));
 double adjustedP = portionSize*Double.parseDouble(nutrientsP.get(selectionIndex));
 double adjustedF = portionSize*Double.parseDouble(nutrientsF.get(selectionIndex));

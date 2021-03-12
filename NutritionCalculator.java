@@ -14,13 +14,9 @@ public class NutritionCalculator {
 
   }
 
-  public static double BMRCalculator(int weight, int height, int age, int activityLevel) {
+  public static double BMRCalculator(double weight, double height, int age, int activityLevel) {
     double BMR = 655 + (4.35*weight) + (4.7*height) - (4.7*age);
     double temp = 0;
-    //1: sedentary
-    //2: lightly active
-    //3: moderately active
-    //4: very active
     if (activityLevel == 1) {
       temp = BMR * 1.2;
     }
@@ -38,9 +34,6 @@ public class NutritionCalculator {
   }
 
   public static ArrayList<Double> macrosCalculator(double BMRValue, int fitnessGoal) {
-    //1: maintain
-    //2: lose fat, gain muscle
-    //3: lose fat and lose muscle
     ArrayList<Double> adjustedMacros = new ArrayList<Double>();
 
     if (fitnessGoal == 1) {

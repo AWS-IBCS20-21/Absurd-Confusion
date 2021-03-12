@@ -14,7 +14,8 @@ public TodayTracker(){
 
 }
 
-public static ArrayList<Double> macrosLeft(double BMRCarbsT, double BMRProteinT, double BMRFatT, double carbsD, double proteinD, double fatD){
+public static ArrayList<Double> macrosLeft(double BMRCarbsT, double BMRProteinT, double BMRFatT,
+double carbsD, double proteinD, double fatD){
   ArrayList<Double> macrosLeft = new ArrayList<Double>();
   macrosLeft.add(BMRCarbsT - carbsD);
   macrosLeft.add(BMRProteinT - proteinD);
@@ -23,7 +24,8 @@ public static ArrayList<Double> macrosLeft(double BMRCarbsT, double BMRProteinT,
   return macrosLeft;
 }
 
-public static ArrayList<Double> macrosTotal(double BMRCarbsS, double BMRProteinS, double BMRFatS, double carbsD, double proteinD, double fatD){
+public static ArrayList<Double> macrosTotal(double BMRCarbsS, double BMRProteinS, double BMRFatS,
+double carbsD, double proteinD, double fatD){
   ArrayList<Double> macrosTotal = new ArrayList<Double>();
   macrosTotal.add(BMRCarbsS + carbsD);
   macrosTotal.add(BMRProteinS + proteinD);
