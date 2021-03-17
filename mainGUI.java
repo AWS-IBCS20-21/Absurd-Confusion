@@ -96,6 +96,8 @@ public class mainGUI {
   private double carbsD;
   private double proteinD;
   private double fatD;
+  private ArrayList<Double> retrieveInfo;
+  private String keyword;
 
 
   private JPanel dailyLog;
@@ -112,8 +114,11 @@ public class mainGUI {
   private ArrayList<Double> filedRemaining;
   private ArrayList<Double> filedTotal;
   private ArrayList<String> filedRemainingAndTotal;
-  private JPanel dailyFoodLog;
+  private JPanel remainingAndTotalLog;
   private String currentlyLogged;
+  private Boolean check;
+  private Boolean checkB;
+  private Boolean checkK;
 
 
 
@@ -130,7 +135,7 @@ public class mainGUI {
   }
   private void setUpGUI(){
      mainFrame = new JFrame("Nutrition Assistant");
-     mainFrame.setSize(900,600);
+     mainFrame.setSize(800,1600);
      mainFrame.setLayout(new GridLayout(2, 2));
 
 
@@ -151,15 +156,15 @@ public class mainGUI {
      logFood.setLayout(new FlowLayout());
      dailyLog = new JPanel();
      dailyLog.setLayout(new FlowLayout());
-     dailyFoodLog = new JPanel();
-     dailyFoodLog.setLayout(new FlowLayout());
+     remainingAndTotalLog = new JPanel();
+     remainingAndTotalLog.setLayout(new FlowLayout());
 
      mainFrame.add(headerLabel);
      mainFrame.add(enterInfo);
      mainFrame.add(macrosInfo);
      mainFrame.add(logFood);
      mainFrame.add(dailyLog);
-     mainFrame.add(dailyFoodLog);
+     mainFrame.add(remainingAndTotalLog);
 
      mainFrame.setVisible(true);
   }
@@ -248,6 +253,7 @@ public class mainGUI {
      logFoodButton = new JButton("Log this");
      logFoodButton.setActionCommand("Log this");
      logFoodButton.addActionListener(new guiActionListener());
+
      clearLogFoodButton = new JButton("Reset");
      clearLogFoodButton.setActionCommand("Clear logFood");
      clearLogFoodButton.addActionListener(new guiActionListener());
@@ -269,7 +275,7 @@ public class mainGUI {
      remainingTodayTextArea.setText(String.format("%.0fg carbohydrates", filedRemaining.get(0)) + "\n" +
      String.format("%.0fg protein", filedRemaining.get(1)) + "\n" + String.format("%.0fg fat", filedRemaining.get(2)));
      clearDailyLogButton = new JButton("Reset");
-     clearDailyLogButton.setActionCommand("Clear dailyLog");
+     clearDailyLogButton.setActionCommand("Clear dailyLog and remainingAndTotalLog");
      clearDailyLogButton.addActionListener(new guiActionListener());
      totalTextArea = new JTextArea(3, 10);
      totalTextArea.setEditable(false);
@@ -324,11 +330,11 @@ public class mainGUI {
      dailyLog.add(loggedTodayLabel);
      dailyLog.add(loggedTodayTextArea);
 
-     dailyFoodLog.add(remainingTodayLabel);
-     dailyFoodLog.add(remainingTodayTextArea);
-     dailyFoodLog.add(totalLabel);
-     dailyFoodLog.add(totalTextArea);
-     dailyFoodLog.add(clearDailyLogButton);
+     remainingAndTotalLog.add(remainingTodayLabel);
+     remainingAndTotalLog.add(remainingTodayTextArea);
+     remainingAndTotalLog.add(totalLabel);
+     remainingAndTotalLog.add(totalTextArea);
+     remainingAndTotalLog.add(clearDailyLogButton);
 
 
 
@@ -340,16 +346,30 @@ public class mainGUI {
 
 
   }
+
   private class guiActionListener implements ActionListener{
      public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-
+        check = true;
         if(command.equals("Enter food"))  {
           if (searchBarTextField.getText().isEmpty()){
             matchTextArea.setText("No match found.");
+          } else
+          {
+          keyword = searchBarTextField.getText();
+          char[] keywordArr = keyword.toCharArray();
+          for (int g = 0; g < keywordArr.length; g++){
+            char c = keywordArr[g];
+            if(!Character.isAlphabetic(c)){
+              check = false;
+              keyword = "";
+              searchBarTextField.setText("Error");
+            }
           }
-          else {
-           String keyword = searchBarTextField.getText();
+
+        }
+         if (check = true){
+
            nameIndex = IntoArrayLists.nameIndex();
            selectionIndex = NutritionalSearch.searchMatches(keyword, nameIndex);
            if (selectionIndex >= 0){
@@ -357,31 +377,60 @@ public class mainGUI {
          }
            else {
             matchTextArea.setText("No match found.");
+          }
            }
          }
-        }
+
+
         else if(command.equals("Calculate BMR")){
+          checkB = true;
            if (weightTextField.getText().isEmpty() || heightTextField.getText().isEmpty() || ageTextField.getText().isEmpty()){
              BMRValue = 0;
+             weightTextField.setText("Error");
+             heightTextField.setText("Error");
+             ageTextField.setText("Error");
            }
            else {
-           weight = Integer.parseInt(weightTextField.getText());
-           height = Integer.parseInt(heightTextField.getText());
+             try{
+           weight = Double.parseDouble(weightTextField.getText());
+           height = Double.parseDouble(heightTextField.getText());
            age = Integer.parseInt(ageTextField.getText());
-           String tempac = (String)activityLevelComboBox.getSelectedItem();
-           int ac = Integer.parseInt(tempac.substring(0,1));
-           BMRValue = NutritionCalculator.BMRCalculator(weight, height, age, ac);
-           activityLevel = activityLevelComboBox.getSelectedIndex();
-           FileLogged.fileBMR(BMRValue);
-           FileLogged.fileWeight(weight);
-           FileLogged.fileHeight(height);
-           FileLogged.fileAge(age);
-           FileLogged.fileActivityLevel(activityLevel);
+            checkB = true;
+           if (weight < 0 || height < 0 || age < 0){
+             weight = 0;
+             height = 0;
+             age = 0;
+             weightTextField.setText("Error");
+             heightTextField.setText("Error");
+             ageTextField.setText("Error");
+             checkB = false;
+           }
+         } catch (NumberFormatException f) {
+           weight = 0;
+           height = 0;
+           age = 0;
+           weightTextField.setText("Error");
+           heightTextField.setText("Error");
+           ageTextField.setText("Error");
+           checkB = false;
+         }
 
+}
+ if (checkB = true){
+   String tempac = (String)activityLevelComboBox.getSelectedItem();
+   int ac = Integer.parseInt(tempac.substring(0,1));
+   BMRValue = NutritionCalculator.BMRCalculator(weight, height, age, ac);
+   activityLevel = activityLevelComboBox.getSelectedIndex();
+   FileLogged.fileBMR(BMRValue);
+   FileLogged.fileWeight(weight);
+   FileLogged.fileHeight(height);
+   FileLogged.fileAge(age);
+   FileLogged.fileActivityLevel(activityLevel);
+ }
            }
 
 
-        }
+
         else if (command.equals("Calculate macronutrients")) {
           String tempfg = (String)fitnessGoalsComboBox.getSelectedItem();
           ArrayList<Double> m = NutritionCalculator.macrosCalculator(BMRValue, Integer.parseInt(tempfg.substring(0,1)));
@@ -412,28 +461,54 @@ public class mainGUI {
           portionSizeComboBox.insertItemAt("Large: " + String.format("%.0f", tempDefaults.get(2)) + "g", 2);
           portionSizeComboBox.insertItemAt("Custom", 3);
         }
+
         else if (command.equals("Confirm portion size")) {
           String tempPortion = (String)portionSizeComboBox.getSelectedItem();
+          checkK = true;
           if (tempPortion.equals("Custom")) {
+            if(customPortionSizeTextField.getText().isEmpty()){
+              portionSize = 0;
+              checkK = false;
+              customPortionSizeTextField.setText("Error");
+            } else {
+            try {
             portionSize = Double.parseDouble(customPortionSizeTextField.getText());
+            checkK = true;
+          } catch (NumberFormatException g) {
+            portionSize = 0;
+            checkK = false;
+            customPortionSizeTextField.setText("Error");
           }
+        }
+          }
+
           else {
             portionSize = tempDefaults.get(portionSizeComboBox.getSelectedIndex());
           }
+          if (portionSize < 0){
+            customPortionSizeTextField.setText("Error");
+            checkK = false;
+          }
+          if (checkK = false){
+            nutritionalInfo.setText("AAAAAA");
+          }
+          if (checkK = true) {
           double factor = portionSize/Double.parseDouble(nutrientsG.get(selectionIndex));
           nutrientsC = IntoArrayLists.nutrientsC();
           nutrientsP = IntoArrayLists.nutrientsP();
           nutrientsF = IntoArrayLists.nutrientsF();
+          retrieveInfo = NutritionalSearch.retrieveInfo(factor, selectionIndex, nutrientsC, nutrientsP, nutrientsF);
           name = nameIndex.get(selectionIndex);
           grams = String.format("%.0f g total", portionSize);
-          carbsD = Double.parseDouble(nutrientsC.get(selectionIndex)) * factor;
-          proteinD = Double.parseDouble(nutrientsP.get(selectionIndex)) * factor;
-          fatD = Double.parseDouble(nutrientsF.get(selectionIndex)) * factor;
+          carbsD = retrieveInfo.get(0);
+          proteinD = retrieveInfo.get(1);
+          fatD = retrieveInfo.get(2);
           carbs = String.format("%.0f g carbohydrates", carbsD);
           protein = String.format("%.0f g protein", proteinD);
           fat = String.format("%.0f g fat", fatD);
 
           nutritionalInfo.setText(name + "\n" + grams + "\n" + carbs + "\n" + protein + "\n" + fat);
+        }
 
         }
         else if (command.equals("Log this")){
@@ -456,6 +531,7 @@ public class mainGUI {
            + String.format("%.0fg protein", BMRProteinS) + "\n" + String.format("%.0fg fat", BMRFatS));
            FileLogged.fileTotal(BMRCarbsS, BMRProteinS, BMRFatS);
         }
+
         else if (command.equals("Clear logFood")){
         Clearing.clearLogFood(searchBarTextField, matchTextArea, portionSizeComboBox, customPortionSizeTextField, nutritionalInfo);
         }
@@ -463,9 +539,9 @@ public class mainGUI {
           Clearing.clearEnterInfo(weightTextField, heightTextField, ageTextField, activityLevelComboBox);
         }
         else if (command.equals("Clear macrosInfo")) {
-          Clearing.clearMacrosInfo(fitnessGoalsComboBox, carbsTextArea, proteinTextArea, fatTextArea);
+          Clearing.clearMacrosInfo(fitnessGoalsComboBox, carbsTextArea, proteinTextArea, fatTextArea, remainingTodayTextArea);
         }
-        else if(command.equals("Clear dailyLog")) {
+        else if(command.equals("Clear dailyLog and remainingAndTotalLog")) {
           Clearing.clearDailyLog(BMRCarbs, BMRProtein, BMRFat, loggedTodayTextArea, remainingTodayTextArea, totalTextArea);
         }
      }

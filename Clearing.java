@@ -83,11 +83,12 @@ public static void clearEnterInfo(JTextField weightTextField, JTextField heightT
 
 }
 
-public static void clearMacrosInfo(JComboBox fitnessGoalsComboBox, JTextArea carbsTextArea, JTextArea proteinTextArea, JTextArea fatTextArea){
+public static void clearMacrosInfo(JComboBox fitnessGoalsComboBox, JTextArea carbsTextArea, JTextArea proteinTextArea, JTextArea fatTextArea, JTextArea remainingTodayTextArea){
   fitnessGoalsComboBox.setSelectedIndex(0);
   carbsTextArea.setText("");
   proteinTextArea.setText("");
   fatTextArea.setText("");
+  remainingTodayTextArea.setText("0g carbohydrates" +"\n" + "0g protein" + "\n" + "0g fat");
   try {
     FileWriter logWriter = new FileWriter("macrosStorageCarbs.txt", false);
     PrintWriter logFlush = new PrintWriter(logWriter, false);
